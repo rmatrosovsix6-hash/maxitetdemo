@@ -18,6 +18,7 @@
             --warning: #F59E0B;
             --danger: #EF4444;
             --cyan: #06B6D4;
+            --sidebar-width: 280px;
         }
 
         * {
@@ -25,6 +26,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -32,6 +34,7 @@
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             overflow-x: hidden;
         }
 
@@ -44,16 +47,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 1rem;
         }
 
         .auth-card {
             background: rgba(255, 255, 255, 0.01);
             border: 1px solid var(--border-color);
             backdrop-filter: blur(20px);
-            padding: 2.5rem 3rem;
-            border-radius: 28px;
+            padding: 2.5rem 2rem;
+            border-radius: 24px;
             width: 100%;
-            max-width: 440px;
+            max-width: 420px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             text-align: center;
         }
@@ -82,13 +86,8 @@
             border-bottom: 2px solid var(--accent-purple);
         }
 
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
-        }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
 
         .auth-input {
             width: 100%;
@@ -137,11 +136,11 @@
         #app-interface {
             display: none;
             width: 100%;
-            min-height: 100vh;
         }
 
+        /* Адаптивный Сайдбар (Десктоп) */
         aside {
-            width: 280px;
+            width: var(--sidebar-width);
             border-right: 1px solid var(--border-color);
             padding: 2.5rem 1.5rem;
             display: flex;
@@ -150,18 +149,18 @@
             background: #090A0E;
             position: fixed;
             height: 100vh;
-            z-index: 10;
+            z-index: 50;
+            top: 0; left: 0;
         }
 
         .logo {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 800;
             letter-spacing: -0.5px;
             display: flex;
             align-items: center;
             gap: 0.6rem;
         }
-
         .logo span { color: var(--accent-purple); }
 
         .nav-links {
@@ -169,7 +168,7 @@
             margin-top: 3.5rem;
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 0.5rem;
             flex-grow: 1;
         }
 
@@ -181,7 +180,7 @@
             color: var(--text-muted);
             text-decoration: none;
             border-radius: 14px;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
             font-weight: 500;
         }
 
@@ -200,125 +199,206 @@
         }
 
         .avatar {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent-purple) 0%, #4C1D95 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
             overflow: hidden;
             background-size: cover;
             background-position: center;
+            flex-shrink: 0;
         }
 
+        /* Главная область контента */
         main {
-            margin-left: 280px;
+            margin-left: var(--sidebar-width);
             padding: 3rem 4rem;
             min-height: 100vh;
-            width: calc(100% - 280px);
-            background: radial-gradient(circle at 90% 10%, rgba(124, 58, 237, 0.03) 0%, transparent 50%);
+            width: calc(100% - var(--sidebar-width));
+            background: radial-gradient(circle at 90% 10%, rgba(124, 58, 237, 0.02) 0%, transparent 50%);
+            flex-grow: 1;
         }
 
-        .tab-content { display: none; animation: fadeIn 0.3s ease forwards; }
+        .tab-content { display: none; animation: fadeIn 0.25s ease forwards; }
         .tab-content.active-tab { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-        header { margin-bottom: 3rem; }
+        header { margin-bottom: 2.5rem; }
         header h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 0.4rem; }
-        header p { color: var(--text-muted); }
+        header p { color: var(--text-muted); font-size: 1rem; }
 
-        .grid-layout { display: grid; grid-template-columns: 1.5fr 1.2fr; gap: 2rem; }
-        .section-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem; }
+        .grid-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; }
+        .section-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
         
-        .custom-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2rem; backdrop-filter: blur(16px); }
+        .custom-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; backdrop-filter: blur(16px); }
         
         /* Стрим-баннер */
-        .live-banner { background: linear-gradient(135deg, rgba(124, 58, 237, 0.12) 0%, rgba(20, 20, 25, 0.7) 100%); border: 1px solid rgba(124, 58, 237, 0.25); margin-bottom: 2rem; }
-        .badge-live { background: var(--danger); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 1.2rem; }
+        .live-banner { background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(20, 20, 25, 0.6) 100%); border: 1px solid rgba(124, 58, 237, 0.2); margin-bottom: 2rem; }
+        .badge-live { background: var(--danger); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 1rem; }
         .badge-live span { width: 6px; height: 6px; background: white; border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-        .btn-action { background: var(--text-main); color: var(--bg-black); padding: 0.8rem 1.8rem; border-radius: 12px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.6rem; transition: all 0.25s; border: none; cursor: pointer; }
-        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,255,255,0.08); }
+        .btn-action { background: var(--text-main); color: var(--bg-black); padding: 0.8rem 1.5rem; border-radius: 12px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.6rem; transition: all 0.2s; border: none; cursor: pointer; font-size: 0.95rem; }
+        .btn-action:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(255,255,255,0.05); }
 
-        /* Списки расписания */
-        .item-list { display: flex; flex-direction: column; gap: 1rem; }
-        .list-item { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
-        .item-main h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.3rem; }
+        /* Элементы списков */
+        .item-list { display: flex; flex-direction: column; gap: 0.8rem; }
+        .list-item { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.2rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+        .item-main h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.2rem; }
         .item-main p { color: var(--text-muted); font-size: 0.85rem; }
-        .badge-info { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 0.5rem 0.9rem; border-radius: 10px; font-size: 0.85rem; }
+        .badge-info { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 0.5rem 0.8rem; border-radius: 10px; font-size: 0.85rem; white-space: nowrap; }
 
-        /* ВИДЖЕТ СТАТИСТИКИ ГРУППЫ */
-        .group-ranking-list { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1rem; }
+        /* Виджет рейтинга */
+        .group-ranking-list { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; }
         .ranking-item { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; border-radius: 12px; background: rgba(255,255,255,0.01); border: 1px solid transparent; }
-        .ranking-item.highlight { background: rgba(124, 58, 237, 0.08); border-color: rgba(124, 58, 237, 0.2); }
-        .ranking-user { display: flex; align-items: center; gap: 0.8rem; }
-        .ranking-position { font-weight: 700; width: 24px; color: var(--text-muted); }
-        .ranking-item.highlight .ranking-position { color: var(--accent-purple); }
-        .ranking-gpa { font-weight: 600; font-size: 0.95rem; }
+        .ranking-item.highlight { background: rgba(124, 58, 237, 0.07); border-color: rgba(124, 58, 237, 0.15); }
+        .ranking-user { display: flex; align-items: center; gap: 0.8rem; min-width: 0; }
+        .ranking-user span { text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        .ranking-position { font-weight: 700; width: 20px; color: var(--text-muted); flex-shrink: 0; }
+        .ranking-gpa { font-weight: 600; font-size: 0.95rem; flex-shrink: 0; }
         
-        .group-summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.2rem; }
+        .group-summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.2rem; border-top: 1px solid var(--border-color); padding-top: 1rem; }
         .summary-stat-box { text-align: center; background: rgba(255,255,255,0.01); padding: 0.8rem; border-radius: 12px; border: 1px solid var(--border-color); }
 
-        /* ТАЙМЛАЙН ЖУРНАЛА */
-        .timeline-scroll-container { display: flex; gap: 0.6rem; overflow-x: auto; padding: 0.8rem; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); border-radius: 18px; margin-bottom: 2rem; scrollbar-width: thin; scrollbar-color: var(--border-color) transparent; }
-        .timeline-month-btn { flex: 0 0 auto; padding: 0.8rem 1.4rem; background: transparent; border: 1px solid transparent; border-radius: 12px; color: var(--text-muted); cursor: pointer; font-weight: 600; font-size: 0.9rem; text-align: center; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
-        .timeline-month-btn span.phase-tag { font-size: 0.65rem; text-transform: uppercase; opacity: 0.5; letter-spacing: 0.5px; font-weight: 400; }
-        .timeline-month-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.02); }
+        /* Таймлайн месяцев */
+        .timeline-scroll-container { display: flex; gap: 0.6rem; overflow-x: auto; padding: 0.4rem; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 1.5rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .timeline-scroll-container::-webkit-scrollbar { display: none; }
+        .timeline-month-btn { flex: 0 0 auto; padding: 0.7rem 1.2rem; background: transparent; border: 1px solid transparent; border-radius: 12px; color: var(--text-muted); cursor: pointer; font-weight: 600; font-size: 0.85rem; text-align: center; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 0.1rem; }
+        .timeline-month-btn span.phase-tag { font-size: 0.6rem; text-transform: uppercase; opacity: 0.4; font-weight: 400; }
         .timeline-month-btn.active-month { color: #FFF; background: var(--accent-purple); border-color: var(--accent-purple); box-shadow: 0 0 15px var(--accent-glow); }
-        .timeline-month-btn.active-month span.phase-tag { opacity: 0.9; }
+        .timeline-month-btn.active-month span.phase-tag { opacity: 0.8; }
 
-        .month-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
-        .mini-stat-card { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.2rem; display: flex; align-items: center; gap: 1rem; }
-        .mini-stat-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: rgba(255,255,255,0.03); }
+        .month-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .mini-stat-card { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; display: flex; align-items: center; gap: 0.8rem; }
+        .mini-stat-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: rgba(255,255,255,0.03); flex-shrink: 0; }
 
-        /* ТАБЛИЦА ОЦЕНОК */
-        .grades-table-container { width: 100%; overflow-x: auto; }
-        .grades-table { width: 100%; border-collapse: collapse; text-align: left; }
-        .grades-table th { padding: 1.2rem 1rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .grades-table td { padding: 1.2rem 1rem; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
-        .grades-table tbody tr:hover { background: rgba(255, 255, 255, 0.01); }
-        .final-badge-col { font-weight: 700; font-size: 1.1rem; }
+        /* Адаптивная таблица */
+        .grades-table-container { width: 100%; overflow-x: auto; border-radius: 12px; -webkit-overflow-scrolling: touch; }
+        .grades-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 500px; }
+        .grades-table th { padding: 1rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .grades-table td { padding: 1rem; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+        .final-badge-col { font-weight: 700; font-size: 1.05rem; }
         .final-badge-col.green { color: var(--success); }
         
-        .special-state-container { text-align: center; padding: 5rem 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.2rem; }
-        .special-state-icon { font-size: 3.5rem; color: var(--accent-purple); text-shadow: 0 0 20px var(--accent-glow); animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .special-state-container { text-align: center; padding: 4rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .special-state-icon { font-size: 3rem; color: var(--accent-purple); text-shadow: 0 0 20px var(--accent-glow); }
 
-        /* ДЗ */
-        .status-badge { padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; display: inline-block; }
+        /* Вкладка ДЗ */
+        .status-badge { padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
         .status-badge.success { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
         .status-badge.warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
-        .btn-submit-task { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+        .btn-submit-task { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 0.85rem; white-space: nowrap; }
         .btn-submit-task:hover { background: var(--accent-purple); border-color: var(--accent-purple); }
 
-        /* ЛИЧНЫЙ КАБИНЕТ И СМЕНА ФОТО */
+        /* Личный Кабинет */
         .profile-container { display: grid; grid-template-columns: 1fr 2fr; gap: 2.5rem; }
-        .profile-card-sidebar { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
-        
+        .profile-card-sidebar { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.2rem; }
         .profile-avatar-wrapper { position: relative; cursor: pointer; }
-        .profile-large-avatar { width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-purple) 0%, #3B82F6 100%); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: bold; overflow: hidden; background-size: cover; background-position: center; transition: all 0.3s; border: 2px solid transparent; }
-        .profile-avatar-wrapper:hover .profile-large-avatar { filter: brightness(0.6); border-color: var(--accent-purple); box-shadow: 0 0 15px var(--accent-glow); }
-        
-        .avatar-upload-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .profile-large-avatar { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-purple) 0%, #3B82F6 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: bold; overflow: hidden; background-size: cover; background-position: center; transition: all 0.2s; }
+        .profile-avatar-wrapper:hover .profile-large-avatar { filter: brightness(0.7); }
+        .avatar-upload-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
         .profile-avatar-wrapper:hover .avatar-upload-overlay { opacity: 1; }
-        .avatar-upload-overlay i { font-size: 1.5rem; }
-        .avatar-upload-overlay span { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem; }
 
-        .profile-info-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-        .info-field { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); padding: 1.2rem; border-radius: 16px; }
-        .info-field label { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; display: block; margin-bottom: 0.3rem; }
+        .profile-info-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .info-field { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); padding: 1rem; border-radius: 14px; }
+        .info-field label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 0.2rem; }
+        .info-field p { font-size: 0.95rem; word-break: break-all; }
 
-        .logout-btn { margin-top: 2rem; background: transparent; border: 1px solid rgba(239, 68, 68, 0.2); color: var(--danger); padding: 0.6rem; border-radius: 10px; cursor: pointer; font-weight: 500; width: 100%; transition: 0.2s; }
+        .logout-btn { margin-top: 1.5rem; background: transparent; border: 1px solid rgba(239, 68, 68, 0.2); color: var(--danger); padding: 0.7rem; border-radius: 10px; cursor: pointer; font-weight: 500; width: 100%; transition: 0.2s; }
         .logout-btn:hover { background: rgba(239, 68, 68, 0.08); }
+        
+        .mobile-header-actions { display: none; }
+
+        /* ================= МЕДИА-ЗАПРОСЫ (АДАПТИВНОСТЬ) ================= */
+        
+        /* Планшеты и Смартфоны (до 1024px) */
+        @media (max-width: 1024px) {
+            main { padding: 2.5rem 2rem; }
+            .grid-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .month-stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* Только мобильные устройства (до 768px) */
+        @media (max-width: 768px) {
+            body { padding-bottom: 70px; } /* Место под нижний Dock-бар */
+
+            /* Трансформация Сайдбара в Нижний Таб-бар */
+            aside {
+                width: 100vw;
+                height: 65px;
+                flex-direction: row;
+                position: fixed;
+                top: auto; bottom: 0; left: 0;
+                padding: 0;
+                background: rgba(9, 10, 14, 0.92);
+                border-right: none;
+                border-top: 1px solid var(--border-color);
+                backdrop-filter: blur(20px);
+                z-index: 99;
+                box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+            }
+
+            aside > div:first-child { width: 100%; height: 100%; }
+            .logo { display: none; } /* Скрываем логотип в мобильной панели */
+
+            .nav-links {
+                margin-top: 0;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                height: 100%;
+                gap: 0;
+            }
+
+            .nav-item { flex: 1; height: 100%; display: flex; justify-content: center; align-items: center; }
+            .nav-item a {
+                flex-direction: column;
+                gap: 0.2rem;
+                padding: 0.5rem 0;
+                font-size: 0.65rem;
+                color: var(--text-muted);
+                background: transparent !important;
+                border: none !important;
+                width: 100%;
+                text-align: center;
+            }
+            .nav-item a i { font-size: 1.25rem; }
+            .nav-item.active a { color: var(--accent-purple); }
+
+            aside > div:last-child { display: none; } /* Скрываем сайдбар-профиль снизу */
+
+            /* Кнопка выхода появляется в Личном Кабинете на мобилках */
+            .mobile-header-actions {
+                display: block;
+                margin-top: 1rem;
+            }
+
+            main { margin-left: 0; width: 100%; padding: 2rem 1.2rem; }
+            header h1 { font-size: 1.8rem; }
+            header p { font-size: 0.9rem; }
+
+            .custom-card { padding: 1.25rem; border-radius: 16px; }
+            .profile-container { grid-template-columns: 1fr; gap: 1.5rem; }
+            .profile-info-fields { grid-template-columns: 1fr; gap: 0.8rem; }
+
+            .list-item { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+            .badge-info { align-self: flex-start; }
+            .btn-submit-task { width: 100%; text-align: center; }
+        }
+
+        /* Совсем крошечные экраны */
+        @media (max-width: 400px) {
+            .month-stats-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- ================= СТРАНИЦА ВХОДА И РЕГИСТРАЦИИ ================= -->
     <div id="auth-screen">
         <div class="auth-card">
             <div class="logo" style="justify-content: center; margin-bottom: 1.5rem;">
@@ -330,16 +410,14 @@
                 <button class="auth-tab-btn" id="tab-register-btn" onclick="toggleAuthMode('register')">Регистрация</button>
             </div>
 
-            <!-- Форма авторизации -->
             <div id="form-login" class="auth-form active">
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; text-align: left;">Войдите, используя свой логин (или логин "roman")</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; text-align: left;">Войдите в систему (логин: "roman", пароль: "123")</p>
                 <input type="text" id="username" class="auth-input" placeholder="Логин">
                 <input type="password" id="password" class="auth-input" placeholder="Пароль">
                 <p id="auth-error" class="msg-alert" style="color: var(--danger);">Неверный логин или пароль!</p>
                 <button class="auth-btn" onclick="handleLogin()">Войти в кабинет</button>
             </div>
 
-            <!-- Форма регистрации -->
             <div id="form-register" class="auth-form">
                 <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; text-align: left;">Создайте новый аккаунт студента</p>
                 <input type="text" id="reg-name" class="auth-input" placeholder="Имя">
@@ -347,29 +425,28 @@
                 <input type="text" id="reg-username" class="auth-input" placeholder="Придумайте логин">
                 <input type="password" id="reg-password" class="auth-input" placeholder="Придумайте пароль">
                 <p id="reg-error" class="msg-alert" style="color: var(--danger);"></p>
-                <p id="reg-success" class="msg-alert" style="color: var(--success);">Регистрация успешна! Теперь вы можете войти.</p>
+                <p id="reg-success" class="msg-alert" style="color: var(--success);">Регистрация успешна! Перенаправление...</p>
                 <button class="auth-btn" onclick="handleRegister()">Зарегистрироваться</button>
             </div>
         </div>
     </div>
 
-    <!-- ================= ОСНОВНОЙ ИНТЕРФЕЙС ПРИЛОЖЕНИЯ ================= -->
     <div id="app-interface">
         <aside>
             <div>
                 <div class="logo"><i class="ri-pulse-line"></i> MAXI<span>TET</span></div>
                 <ul class="nav-links">
                     <li class="nav-item active" id="menu-dash" onclick="switchTab('tab-dashboard', this)">
-                        <a href="javascript:void(0)"><i class="ri-grid-fill"></i> Главная</a>
+                        <a href="javascript:void(0)"><i class="ri-grid-fill"></i><span>Главная</span></a>
                     </li>
                     <li class="nav-item" onclick="switchTab('tab-profile', this)">
-                        <a href="javascript:void(0)"><i class="ri-user-3-line"></i> Личный кабинет</a>
+                        <a href="javascript:void(0)"><i class="ri-user-3-line"></i><span>Кабинет</span></a>
                     </li>
                     <li class="nav-item" onclick="switchTab('tab-grades', this)">
-                        <a href="javascript:void(0)"><i class="ri-todo-line"></i> Журнал по месяцам</a>
+                        <a href="javascript:void(0)"><i class="ri-todo-line"></i><span>Журнал</span></a>
                     </li>
                     <li class="nav-item" onclick="switchTab('tab-homework', this)">
-                        <a href="javascript:void(0)"><i class="ri-book-read-line"></i> Домашние задания</a>
+                        <a href="javascript:void(0)"><i class="ri-book-read-line"></i><span>Задания</span></a>
                     </li>
                 </ul>
             </div>
@@ -377,8 +454,8 @@
                 <div class="user-profile-shortcut">
                     <div class="avatar" id="sidebar-avatar-view">Р</div>
                     <div>
-                        <h4 id="sidebar-user-name" style="font-size: 0.95rem; font-weight: 600;">Роман М.</h4>
-                        <p style="color: var(--text-muted); font-size: 0.8rem;">Группа ИС-124</p>
+                        <h4 id="sidebar-user-name" style="font-size: 0.9rem; font-weight: 600;">Роман М.</h4>
+                        <p style="color: var(--text-muted); font-size: 0.75rem;">Группа ИС-124</p>
                     </div>
                 </div>
                 <button class="logout-btn" onclick="handleLogout()"><i class="ri-logout-box-r-line"></i> Выйти</button>
@@ -386,202 +463,120 @@
         </aside>
 
         <main>
-            <!-- 1. ВКЛАДКА: ГЛАВНАЯ -->
             <div id="tab-dashboard" class="tab-content active-tab">
                 <header>
-                    <h1 id="welcome-title">С возвращением, Роман!</h1>
-                    <p>Твое актуальное расписание пар и статус обучения на сегодня.</p>
+                    <h1 id="welcome-title">С возвращением!</h1>
+                    <p>Твое расписание пар и статус обучения на сегодня.</p>
                 </header>
 
                 <div class="grid-layout">
                     <div>
                         <div class="custom-card live-banner">
-                            <div class="badge-live"><span></span>В ЭФИРЕ ПРЯМО СЕЙЧАС</div>
-                            <h2 style="font-size: 1.7rem; font-weight: 700; margin-bottom: 0.5rem;">Основы веб-разработки и UI/UX</h2>
-                            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Платформа интеграции трансляции: максимум</p>
+                            <div class="badge-live"><span></span>В ЭФИРЕ</div>
+                            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Основы веб-разработки и UI/UX</h2>
+                            <p style="color: var(--text-muted); margin-bottom: 1.2rem; font-size:0.9rem;">Онлайн-платформа трансляции</p>
                             <a href="https://maximumtest.ru/" target="_blank" class="btn-action">Войти на пару <i class="ri-external-link-line"></i></a>
                         </div>
 
-                        <div class="section-title"><i class="ri-time-line" style="color: var(--accent-purple);"></i> Расписание занятий</div>
+                        <div class="section-title"><i class="ri-time-line" style="color: var(--accent-purple);"></i> Сегодняшние пары</div>
                         <div class="item-list">
                             <div class="list-item">
-                                <div class="item-main"><h4>Архитектура программного обеспечения</h4><p>Лекция · Преподаватель: Котов Д.А.</p></div>
+                                <div class="item-main"><h4>Архитектура ПО</h4><p>Лекция · Котов Д.А.</p></div>
                                 <div class="badge-info">09:00 - 10:30</div>
                             </div>
                             <div class="list-item">
-                                <div class="item-main"><h4>Основы веб-разработки и UI/UX</h4><p>Онлайн-практика (Максимум)</p></div>
+                                <div class="item-main"><h4>Основы веб-разработки и UI/UX</h4><p>Практика (Максимум)</p></div>
                                 <div class="badge-info">11:00 - 12:30</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- ВИДЖЕТ СТАТИСТИКИ ГРУППЫ -->
                     <div>
-                        <div class="section-title"><i class="ri-team-line" style="color: var(--accent-purple);"></i> Рейтинг группы ИС-124</div>
-                        <div class="custom-card" style="padding: 1.5rem;">
+                        <div class="section-title"><i class="ri-team-line" style="color: var(--accent-purple);"></i> Топ группы ИС-124</div>
+                        <div class="custom-card" style="padding: 1.25rem;">
                             <div class="group-ranking-list">
-                                <div class="ranking-item">
-                                    <div class="ranking-user"><span class="ranking-position">1</span><span>Алексей К.</span></div>
-                                    <span class="ranking-gpa" style="color: var(--success);">4.92</span>
-                                </div>
-                                <div class="ranking-item">
-                                    <div class="ranking-user"><span class="ranking-position">2</span><span>Мария Д.</span></div>
-                                    <span class="ranking-gpa" style="color: var(--success);">4.75</span>
-                                </div>
-                                <div class="ranking-item highlight">
-                                    <div class="ranking-user"><span class="ranking-position">3</span><strong id="rank-user-label">Роман М. (Вы)</strong></div>
-                                    <span class="ranking-gpa" style="color: #A78BFA; font-weight:700;">4.40</span>
-                                </div>
-                                <div class="ranking-item">
-                                    <div class="ranking-user"><span class="ranking-position">4</span><span>Иван П.</span></div>
-                                    <span class="ranking-gpa" style="color: var(--warning);">4.15</span>
-                                </div>
-                                <div class="ranking-item">
-                                    <div class="ranking-user"><span class="ranking-position">5</span><span>Елена С.</span></div>
-                                    <span class="ranking-gpa" style="color: var(--danger);">3.60</span>
-                                </div>
+                                <div class="ranking-item"><div class="ranking-user"><span class="ranking-position">1</span><span>Алексей К.</span></div><span class="ranking-gpa" style="color: var(--success);">4.92</span></div>
+                                <div class="ranking-item"><div class="ranking-user"><span class="ranking-position">2</span><span>Мария Д.</span></div><span class="ranking-gpa" style="color: var(--success);">4.75</span></div>
+                                <div class="ranking-item highlight"><div class="ranking-user"><span class="ranking-position">3</span><strong id="rank-user-label">Роман М. (Вы)</strong></div><span class="ranking-gpa" style="color: #A78BFA; font-weight:700;">4.40</span></div>
+                                <div class="ranking-item"><div class="ranking-user"><span class="ranking-position">4</span><span>Иван П.</span></div><span class="ranking-gpa" style="color: var(--warning);">4.15</span></div>
                             </div>
-
                             <div class="group-summary-stats">
-                                <div class="summary-stat-box">
-                                    <p style="color: var(--text-muted); font-size: 0.75rem;">Ср. балл группы</p>
-                                    <h4 style="font-size: 1.1rem; margin-top: 0.2rem; color: var(--cyan);">4.36</h4>
-                                </div>
-                                <div class="summary-stat-box">
-                                    <p style="color: var(--text-muted); font-size: 0.75rem;">Твоя позиция</p>
-                                    <h4 style="font-size: 1.1rem; margin-top: 0.2rem; color: var(--accent-purple);">3 из 24</h4>
-                                </div>
+                                <div class="summary-stat-box"><p style="color: var(--text-muted); font-size: 0.7rem;">Ср. балл группы</p><h4 style="font-size: 1rem; color: var(--cyan); margin-top:0.1rem;">4.36</h4></div>
+                                <div class="summary-stat-box"><p style="color: var(--text-muted); font-size: 0.7rem;">Ранг</p><h4 style="font-size: 1rem; color: var(--accent-purple); margin-top:0.1rem;">3 из 24</h4></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. ВКЛАДКА: ЛИЧНЫЙ КАБИНЕТ -->
             <div id="tab-profile" class="tab-content">
-                <header><h1>Личный кабинет студента</h1><p>Персональные и академические сведения.</p></header>
+                <header><h1>Личный кабинет</h1><p>Академический профиль студента.</p></header>
                 <div class="custom-card profile-container">
                     <div class="profile-card-sidebar">
                         <div class="profile-avatar-wrapper" onclick="triggerAvatarUpload()">
                             <div class="profile-large-avatar" id="profile-avatar-view">Р</div>
-                            <div class="avatar-upload-overlay">
-                                <i class="ri-camera-switch-line"></i>
-                                <span>Изменить</span>
-                            </div>
+                            <div class="avatar-upload-overlay"><i class="ri-camera-switch-line"></i></div>
                         </div>
                         <input type="file" id="avatar-file-input" style="display: none;" accept="image/*" onchange="loadAvatar(event)">
-
                         <div>
-                            <h2 id="profile-full-name" style="font-weight:700;">Морозов Роман</h2>
-                            <p style="color: var(--accent-purple); font-weight:500;">Студент 1 курса</p>
+                            <h2 id="profile-full-name" style="font-size:1.3rem; font-weight:700;">Роман Морозов</h2>
+                            <p style="color: var(--accent-purple); font-weight:500; font-size:0.9rem;">Студент 1 курса</p>
                         </div>
                     </div>
                     <div>
-                        <h3 style="margin-bottom:1.2rem; font-size:1.1rem;">Карточка студента</h3>
                         <div class="profile-info-fields">
-                            <div class="info-field"><label>Специальность</label><p>Информационные системы и программирование</p></div>
+                            <div class="info-field"><label>Специальность</label><p>Информационные системы</p></div>
                             <div class="info-field"><label>Группа</label><p>ИС-124</p></div>
-                            <div class="info-field"><label>ID Студенческого</label><p>MT-2024-8902</p></div>
-                            <div class="info-field"><label>Почта / Логин</label><p id="profile-email-view">roman@maxitet.edu</p></div>
+                            <div class="info-field"><label>Студенческий</label><p>MT-2024-8902</p></div>
+                            <div class="info-field"><label>Логин системы</label><p id="profile-email-view">roman</p></div>
+                        </div>
+                        <div class="mobile-header-actions">
+                            <button class="logout-btn" onclick="handleLogout()"><i class="ri-logout-box-r-line"></i> Выйти из аккаунта</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. ВКЛАДКА: ЖУРНАЛ ОЦЕНОК (ВСЕ 12 МЕСЯЦЕВ) -->
             <div id="tab-grades" class="tab-content">
-                <header><h1>Архитектура Успеваемости</h1><p>Кликни по любому месяцу на интерактивном таймлайне для загрузки ведомости.</p></header>
-                
-                <!-- Прокручиваемый таймлайн на 12 месяцев -->
+                <header><h1>Успеваемость</h1><p>Интерактивная лента учебных периодов.</p></header>
                 <div class="timeline-scroll-container" id="timeline-container"></div>
-                
                 <div class="month-stats-grid">
-                    <div class="mini-stat-card">
-                        <div class="mini-stat-icon" style="color: var(--accent-purple);"><i class="ri-bookmark-3-line"></i></div>
-                        <div><p style="color: var(--text-muted); font-size: 0.75rem;">Статус периода</p><h4 id="stat-phase">—</h4></div>
-                    </div>
-                    <div class="mini-stat-card">
-                        <div class="mini-stat-icon" style="color: var(--success);"><i class="ri-star-line"></i></div>
-                        <div><p style="color: var(--text-muted); font-size: 0.75rem;">Средний балл</p><h4 id="stat-gpa">—</h4></div>
-                    </div>
-                    <div class="mini-stat-card">
-                        <div class="mini-stat-icon" style="color: var(--cyan);"><i class="ri-checkbox-circle-line"></i></div>
-                        <div><p style="color: var(--text-muted); font-size: 0.75rem;">Сдано предметов</p><h4 id="stat-passed">—</h4></div>
-                    </div>
-                    <div class="mini-stat-card">
-                        <div class="mini-stat-icon" style="color: var(--warning);"><i class="ri-user-voice-line"></i></div>
-                        <div><p style="color: var(--text-muted); font-size: 0.75rem;">Посещаемость</p><h4 id="stat-attendance">—</h4></div>
-                    </div>
+                    <div class="mini-stat-card"><div class="mini-stat-icon" style="color: var(--accent-purple);"><i class="ri-bookmark-3-line"></i></div><div><p style="color: var(--text-muted); font-size: 0.7rem;">Период</p><h4 id="stat-phase" style="font-size:0.9rem;">—</h4></div></div>
+                    <div class="mini-stat-card"><div class="mini-stat-icon" style="color: var(--success);"><i class="ri-star-line"></i></div><div><p style="color: var(--text-muted); font-size: 0.7rem;">Ср. балл</p><h4 id="stat-gpa" style="font-size:0.9rem;">—</h4></div></div>
+                    <div class="mini-stat-card"><div class="mini-stat-icon" style="color: var(--cyan);"><i class="ri-checkbox-circle-line"></i></div><div><p style="color: var(--text-muted); font-size: 0.7rem;">Сдано</p><h4 id="stat-passed" style="font-size:0.9rem;">—</h4></div></div>
+                    <div class="mini-stat-card"><div class="mini-stat-icon" style="color: var(--warning);"><i class="ri-user-voice-line"></i></div><div><p style="color: var(--text-muted); font-size: 0.7rem;">Посещ.</p><h4 id="stat-attendance" style="font-size:0.9rem;">—</h4></div></div>
                 </div>
                 <div class="custom-card" id="grades-board-wrapper"></div>
             </div>
 
-            <!-- 4. ВКЛАДКА: ДОМАШНИЕ ЗАДАНИЯ -->
             <div id="tab-homework" class="tab-content">
-                <header><h1>Домашние задания и проекты</h1><p>Следи за дедлайнами и управляй отправкой решений.</p></header>
+                <header><h1>Домашние задания</h1><p>Контроль дедлайнов и отправка кода проекта.</p></header>
                 <div class="item-list" id="homework-list-container"></div>
             </div>
         </main>
     </div>
 
-    <!-- ================= СКРИПТ УПРАВЛЕНИЯ И ДАННЫЕ ================= -->
     <script>
-        // Инициализация базы пользователей
         if (!localStorage.getItem('users')) {
-            const defaultUsers = {
-                'roman': { password: '123', name: 'Роман', surname: 'Морозов' }
-            };
+            const defaultUsers = { 'roman': { password: '123', name: 'Роман', surname: 'Морозов' } };
             localStorage.setItem('users', JSON.stringify(defaultUsers));
         }
 
         let currentUser = null;
 
-        // Полная база на все 12 месяцев года
         const academicYearData = {
-            september: { name: "Сентябрь", phase: "1 Семестр", type: "table", gpa: "4.8", passed: "3 / 3", att: "98%", data: [
-                { title: "Информатика", total: "5", hw: "5", pos: "5" },
-                { title: "Математика", total: "4", hw: "4", pos: "5" },
-                { title: "Основы алгоритмизации", total: "5", hw: "5", pos: "4" }
-            ]},
-            october: { name: "Октябрь", phase: "1 Семестр", type: "table", gpa: "4.5", passed: "3 / 3", att: "96%", data: [
-                { title: "Информатика", total: "5", hw: "4", pos: "5" },
-                { title: "Математика", total: "4", hw: "4", pos: "4" },
-                { title: "Основы алгоритмизации", total: "4", hw: "5", pos: "5" }
-            ]},
-            november: { name: "Ноябрь", phase: "1 Семестр", type: "table", gpa: "4.6", passed: "3 / 3", att: "92%", data: [
-                { title: "Информатика", total: "5", hw: "5", pos: "4" },
-                { title: "Математика", total: "4", hw: "5", pos: "5" },
-                { title: "Основы алгоритмизации", total: "5", hw: "4", pos: "4" }
-            ]},
-            december: { name: "Декабрь", phase: "Зимняя Сессия", type: "table", gpa: "4.7", passed: "3 / 3", att: "95%", data: [
-                { title: "Экзамен: Информатика", total: "5", hw: "5", pos: "5" },
-                { title: "Экзамен: Математика", total: "4", hw: "4", pos: "5" },
-                { title: "Диф.зачет: Алгоритмы", total: "5", hw: "5", pos: "5" }
-            ]},
-            january: { name: "Январь", phase: "Каникулы", type: "empty", gpa: "—", passed: "—", att: "—", icon: "ri-snowflake-line", title: "Зимние каникулы", desc: "Учебный семестр завершен. Отдыхайте и набирайтесь сил перед новыми проектами!" },
-            february: { name: "Февраль", phase: "2 Семестр", type: "table", gpa: "4.3", passed: "3 / 3", att: "94%", data: [
-                { title: "Архитектура ПО", total: "4", hw: "4", pos: "5" },
-                { title: "Основы веб-разработки", total: "5", hw: "5", pos: "4" },
-                { title: "Разработка баз данных", total: "4", hw: "4", pos: "5" }
-            ]},
-            march: { name: "Март", phase: "2 Семестр", type: "table", gpa: "4.5", passed: "3 / 3", att: "91%", data: [
-                { title: "Архитектура ПО", total: "4", hw: "5", pos: "4" },
-                { title: "Основы веб-разработки", total: "5", hw: "5", pos: "5" },
-                { title: "Разработка баз данных", total: "4", hw: "5", pos: "4" }
-            ]},
-            april: { name: "Апрель", phase: "2 Семестр", type: "table", gpa: "4.4", passed: "3 / 3", att: "95%", data: [
-                { title: "Архитектура ПО", total: "5", hw: "4", pos: "5" },
-                { title: "Основы веб-разработки", total: "4", hw: "5", pos: "4" },
-                { title: "Разработка баз данных", total: "4", hw: "4", pos: "5" }
-            ]},
-            may: { name: "Май", phase: "2 Семестр", type: "table", gpa: "4.4", passed: "3 / 3", att: "92%", data: [
-                { title: "Архитектура ПО", total: "4", hw: "4", pos: "4" },
-                { title: "Основы веб-разработки", total: "5", hw: "5", pos: "5" },
-                { title: "Разработка баз данных", total: "4", hw: "4", pos: "4" }
-            ]},
-            june: { name: "Июнь", phase: "Летняя Сессия", type: "empty", gpa: "—", passed: "0 / 3", att: "—", icon: "ri-book-open-line", title: "Оценки скоро появятся!", desc: "Экзаменационная сессия начнется в середине месяца." },
-            july: { name: "Июль", phase: "Практика", type: "empty", gpa: "—", passed: "—", att: "—", icon: "ri-terminal-box-line", title: "Производственная практика", desc: "Период стажировок, написания отчетов и работы над реальными кейсами компаний." },
-            august: { name: "Август", phase: "Каникулы", type: "empty", gpa: "—", passed: "—", att: "—", icon: "ri-sun-line", title: "Летние каникулы", desc: "Увидимся в следующем учебном году! Хорошего отдыха." }
+            september: { name: "Сент", phase: "1 Сем", type: "table", gpa: "4.8", passed: "3/3", att: "98%", data: [{ title: "Информатика", total: "5", hw: "5", pos: "5" }, { title: "Математика", total: "4", hw: "4", pos: "5" }, { title: "Алгоритмизация", total: "5", hw: "5", pos: "4" }] },
+            october: { name: "Окт", phase: "1 Сем", type: "table", gpa: "4.5", passed: "3/3", att: "96%", data: [{ title: "Информатика", total: "5", hw: "4", pos: "5" }, { title: "Математика", total: "4", hw: "4", pos: "4" }, { title: "Алгоритмизация", total: "4", hw: "5", pos: "5" }] },
+            november: { name: "Нояб", phase: "1 Сем", type: "table", gpa: "4.6", passed: "3/3", att: "92%", data: [{ title: "Информатика", total: "5", hw: "5", pos: "4" }, { title: "Математика", total: "4", hw: "5", pos: "5" }, { title: "Алгоритмизация", total: "5", hw: "4", pos: "4" }] },
+            december: { name: "Дек", phase: "Сессия", type: "table", gpa: "4.7", passed: "3/3", att: "95%", data: [{ title: "Экзамен: Информатика", total: "5", hw: "5", pos: "5" }, { title: "Экзамен: Математика", total: "4", hw: "4", pos: "5" }, { title: "Зачет: Алгоритмы", total: "5", hw: "5", pos: "5" }] },
+            january: { name: "Янв", phase: "Каникулы", type: "empty", gpa: "—", passed: "—", att: "—", icon: "ri-snowflake-line", title: "Зимние каникулы", desc: "Учебный семестр успешно завершен!" },
+            february: { name: "Февр", phase: "2 Сем", type: "table", gpa: "4.3", passed: "3/3", att: "94%", data: [{ title: "Архитектура ПО", total: "4", hw: "4", pos: "5" }, { title: "Веб-разработка", total: "5", hw: "5", pos: "4" }, { title: "Базы данных", total: "4", hw: "4", pos: "5" }] },
+            march: { name: "Март", phase: "2 Сем", type: "table", gpa: "4.5", passed: "3/3", att: "91%", data: [{ title: "Архитектура ПО", total: "4", hw: "5", pos: "4" }, { title: "Веб-разработка", total: "5", hw: "5", pos: "5" }, { title: "Базы данных", total: "4", hw: "5", pos: "4" }] },
+            april: { name: "Апр", phase: "2 Сем", type: "table", gpa: "4.4", passed: "3/3", att: "95%", data: [{ title: "Архитектура ПО", total: "5", hw: "4", pos: "5" }, { title: "Веб-разработка", total: "4", hw: "5", pos: "4" }, { title: "Базы данных", total: "4", hw: "4", pos: "5" }] },
+            may: { name: "Май", phase: "2 Сем", type: "table", gpa: "4.4", passed: "3/3", att: "92%", data: [{ title: "Архитектура ПО", total: "4", hw: "4", pos: "4" }, { title: "Веб-разработка", total: "5", hw: "5", pos: "5" }, { title: "Базы данных", total: "4", hw: "4", pos: "4" }] },
+            june: { name: "Июнь", phase: "Сессия", type: "empty", gpa: "—", passed: "0/3", att: "—", icon: "ri-book-open-line", title: "Экзамены", desc: "Летняя сессия стартует в середине июня." },
+            july: { name: "Июль", phase: "Практика", type: "empty", gpa: "—", passed: "—", att: "—", icon: "ri-terminal-box-line", title: "Практика", desc: "Работа над реальными ИТ-кейсами." },
+            august: { name: "Авг", phase: "Каникулы", type: "empty", gpa: "—", passed: "—", att: "—", icon: "ri-sun-line", title: "Летние каникулы", desc: "Увидимся в новом учебном году!" }
         };
 
         const homeworksData = [
@@ -593,7 +588,6 @@
             document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
             document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.msg-alert').forEach(m => m.style.display = 'none');
-
             if (mode === 'login') {
                 document.getElementById('form-login').classList.add('active');
                 document.getElementById('tab-login-btn').classList.add('active');
@@ -611,27 +605,21 @@
             const errBox = document.getElementById('reg-error');
             const successBox = document.getElementById('reg-success');
 
-            errBox.style.display = 'none';
-            successBox.style.display = 'none';
+            errBox.style.display = 'none'; successBox.style.display = 'none';
 
             if (!name || !surname || !user || !pass) {
-                errBox.innerText = 'Заполните все поля!';
-                errBox.style.display = 'block';
-                return;
+                errBox.innerText = 'Заполните все поля!'; errBox.style.display = 'block'; return;
             }
 
             let users = JSON.parse(localStorage.getItem('users'));
             if (users[user]) {
-                errBox.innerText = 'Логин занят!';
-                errBox.style.display = 'block';
-                return;
+                errBox.innerText = 'Логин занят!'; errBox.style.display = 'block'; return;
             }
 
             users[user] = { password: pass, name: name, surname: surname };
             localStorage.setItem('users', JSON.stringify(users));
-
             successBox.style.display = 'block';
-            setTimeout(() => toggleAuthMode('login'), 1500);
+            setTimeout(() => toggleAuthMode('login'), 1200);
         }
 
         function handleLogin() {
@@ -640,16 +628,12 @@
             const errBox = document.getElementById('auth-error');
 
             let users = JSON.parse(localStorage.getItem('users'));
-
             if (users[user] && users[user].password === pass) {
                 currentUser = users[user];
                 currentUser.login = user;
-                
                 setupUserInterface();
-
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('app-interface').style.display = 'block';
-                
                 initTimeline();
                 initHomeworks();
             } else {
@@ -666,11 +650,10 @@
             document.getElementById('sidebar-user-name').innerText = `${currentUser.name} ${firstLetter}.`;
             document.getElementById('rank-user-label').innerText = `${currentUser.name} ${firstLetter}. (Вы)`;
             document.getElementById('profile-full-name').innerText = `${currentUser.surname} ${currentUser.name}`;
-            document.getElementById('profile-email-view').innerText = `${currentUser.login}@maxitet.edu`;
+            document.getElementById('profile-email-view').innerText = currentUser.login;
 
             const profAv = document.getElementById('profile-avatar-view');
             const sideAv = document.getElementById('sidebar-avatar-view');
-            
             profAv.style.backgroundImage = 'none'; profAv.innerText = initials;
             sideAv.style.backgroundImage = 'none'; sideAv.innerText = initials;
         }
@@ -725,9 +708,9 @@
 
             const wrapper = document.getElementById('grades-board-wrapper');
             if (mData.type === 'table') {
-                let tableHTML = `<div class="grades-table-container"><table class="grades-table"><thead><tr><th>Предмет</th><th>Итог</th><th>ДЗ</th><th>Посещаемость</th></tr></thead><tbody>`;
+                let tableHTML = `<div class="grades-table-container"><table class="grades-table"><thead><tr><th>Предмет</th><th>Итог</th><th>ДЗ</th><th>Посещ.</th></tr></thead><tbody>`;
                 mData.data.forEach(row => {
-                    tableHTML += `<tr><td>${row.title}</td><td><span class="final-badge-col green">${row.total}</span></td><td>${row.hw}</td><td>${row.pos}</td></tr>`;
+                    tableHTML += `<tr><td><strong>${row.title}</strong></td><td><span class="final-badge-col green">${row.total}</span></td><td>${row.hw}</td><td>${row.pos}</td></tr>`;
                 });
                 tableHTML += `</tbody></table></div>`;
                 wrapper.innerHTML = tableHTML;
@@ -744,8 +727,8 @@
                     <div class="custom-card list-item">
                         <div>
                             <span class="status-badge ${task.status}">${task.statusText}</span>
-                            <h3 style="font-weight:700; font-size:1.15rem; margin-top:0.4rem;">${task.title}</h3>
-                            <p style="color:var(--text-muted); font-size:0.85rem;">Дисциплина: ${task.subject} · ${task.date}</p>
+                            <h3 style="font-weight:700; font-size:1.1rem; margin-top:0.4rem;">${task.title}</h3>
+                            <p style="color:var(--text-muted); font-size:0.85rem;">${task.subject} · ${task.date}</p>
                         </div>
                         ${task.status === 'warning' ? '<button class="btn-submit-task">Сдать работу</button>' : '<span style="color:var(--success); font-weight:600;">✔️ Выполнено</span>'}
                     </div>`;
@@ -756,7 +739,8 @@
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active-tab'));
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.getElementById(tabId).classList.add('active-tab');
-            element.classList.add('active');
+            if (element) element.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Плавный скролл наверх при смене табов на телефонах
         }
     </script>
 </body>
