@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maxitet | Экосистема Студента</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-black: #050608;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --border-color: rgba(255, 255, 255, 0.07);
+            --accent-purple: #7C3AED;
+            --accent-glow: rgba(124, 58, 237, 0.3);
+            --text-main: #F3F4F6;
+            --text-muted: #8E9196;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --cyan: #06B6D4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* --- СТРАНИЦА ВХОДА И РЕГИСТРАЦИИ --- */
+        #auth-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 50% 50%, #100E1A 0%, #050608 100%);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem 3rem;
+            border-radius: 28px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.8rem;
+        }
+
+        .auth-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.2rem 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .auth-tab-btn.active {
+            color: var(--text-main);
+            border-bottom: 2px solid var(--accent-purple);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: white;
+            margin-top: 0.8rem;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .auth-input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--text-main);
+            color: var(--bg-black);
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+        }
+
+        .msg-alert {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        /* --- ОСНОВНОЙ ИНТЕРФЕЙС ПРИЛОЖЕНИЯ --- */
+        #app-interface {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        aside {
+            width: 280px;
+            border-right: 1px solid var(--border-color);
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #090A0E;
+            position: fixed;
+            height: 100vh;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .logo span { color: var(--accent-purple); }
+
+        .nav-links {
+            list-style: none;
+            margin-top: 3.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            flex-grow: 1;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.2rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 14px;
+            transition: all 0.25s ease;
+            font-weight: 500;
+        }
+
+        .nav-item.active a, .nav-item a:hover {
+            color: var(--text-main);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        .user-profile-shortcut {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, #4C1D95 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        main {
+            margin-left: 280px;
+            padding: 3rem 4rem;
+            min-height: 100vh;
+            width: calc(100% - 280px);
+            background: radial-gradient(circle at 90% 10%, rgba(124, 58, 237, 0.03) 0%, transparent 50%);
+        }
+
+        .tab-content { display: none; animation: fadeIn 0.3s ease forwards; }
+        .tab-content.active-tab { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        header { margin-bottom: 3rem; }
+        header h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 0.4rem; }
+        header p { color: var(--text-muted); }
+
+        .grid-layout { display: grid; grid-template-columns: 1.5fr 1.2fr; gap: 2rem; }
+        .section-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem; }
+        
+        .custom-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2rem; backdrop-filter: blur(16px); }
+        
+        /* Стрим-баннер */
+        .live-banner { background: linear-gradient(135deg, rgba(124, 58, 237, 0.12) 0%, rgba(20, 20, 25, 0.7) 100%); border: 1px solid rgba(124, 58, 237, 0.25); margin-bottom: 2rem; }
+        .badge-live { background: var(--danger); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 1.2rem; }
+        .badge-live span { width: 6px; height: 6px; background: white; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+
+        .btn-action { background: var(--text-main); color: var(--bg-black); padding: 0.8rem 1.8rem; border-radius: 12px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.6rem; transition: all 0.25s; border: none; cursor: pointer; }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,255,255,0.08); }
+
+        /* Списки расписания */
+        .item-list { display: flex; flex-direction: column; gap: 1rem; }
+        .list-item { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .item-main h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.3rem; }
+        .item-main p { color: var(--text-muted); font-size: 0.85rem; }
+        .badge-info { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 0.5rem 0.9rem; border-radius: 10px; font-size: 0.85rem; }
+
+        /* ВИДЖЕТ СТАТИСТИКИ ГРУППЫ */
+        .group-ranking-list { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1rem; }
+        .ranking-item { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; border-radius: 12px; background: rgba(255,255,255,0.01); border: 1px solid transparent; }
+        .ranking-item.highlight { background: rgba(124, 58, 237, 0.08); border-color: rgba(124, 58, 237, 0.2); }
+        .ranking-user { display: flex; align-items: center; gap: 0.8rem; }
+        .ranking-position { font-weight: 700; width: 24px; color: var(--text-muted); }
+        .ranking-item.highlight .ranking-position { color: var(--accent-purple); }
+        .ranking-gpa { font-weight: 600; font-size: 0.95rem; }
+        
+        .group-summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.2rem; }
+        .summary-stat-box { text-align: center; background: rgba(255,255,255,0.01); padding: 0.8rem; border-radius: 12px; border: 1px solid var(--border-color); }
+
+        /* ТАЙМЛАЙН ЖУРНАЛА */
+        .timeline-scroll-container { display: flex; gap: 0.6rem; overflow-x: auto; padding: 0.8rem; background: rgba(255, 255, 255, 0.01); border: 1px solid var(--border-color); border-radius: 18px; margin-bottom: 2rem; scrollbar-width: thin; scrollbar-color: var(--border-color) transparent; }
+        .timeline-month-btn { flex: 0 0 auto; padding: 0.8rem 1.4rem; background: transparent; border: 1px solid transparent; border-radius: 12px; color: var(--text-muted); cursor: pointer; font-weight: 600; font-size: 0.9rem; text-align: center; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+        .timeline-month-btn span.phase-tag { font-size: 0.65rem; text-transform: uppercase; opacity: 0.5; letter-spacing: 0.5px; font-weight: 400; }
+        .timeline-month-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.02); }
+        .timeline-month-btn.active-month { color: #FFF; background: var(--accent-purple); border-color: var(--accent-purple); box-shadow: 0 0 15px var(--accent-glow); }
+        .timeline-month-btn.active-month span.phase-tag { opacity: 0.9; }
+
+        .month-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        .mini-stat-card { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.2rem; display: flex; align-items: center; gap: 1rem; }
+        .mini-stat-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: rgba(255,255,255,0.03); }
+
+        /* ТАБЛИЦА ОЦЕНОК */
+        .grades-table-container { width: 100%; overflow-x: auto; }
+        .grades-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .grades-table th { padding: 1.2rem 1rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .grades-table td { padding: 1.2rem 1rem; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
+        .grades-table tbody tr:hover { background: rgba(255, 255, 255, 0.01); }
+        .final-badge-col { font-weight: 700; font-size: 1.1rem; }
+        .final-badge-col.green { color: var(--success); }
+        
+        .special-state-container { text-align: center; padding: 5rem 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.2rem; }
+        .special-state-icon { font-size: 3.5rem; color: var(--accent-purple); text-shadow: 0 0 20px var(--accent-glow); animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+        /* ДЗ */
+        .status-badge { padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; display: inline-block; }
+        .status-badge.success { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .status-badge.warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .btn-submit-task { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+        .btn-submit-task:hover { background: var(--accent-purple); border-color: var(--accent-purple); }
+
+        /* ЛИЧНЫЙ КАБИНЕТ И СМЕНА ФОТО */
+        .profile-container { display: grid; grid-template-columns: 1fr 2fr; gap: 2.5rem; }
+        .profile-card-sidebar { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+        
+        .profile-avatar-wrapper { position: relative; cursor: pointer; }
+        .profile-large-avatar { width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-purple) 0%, #3B82F6 100%); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: bold; overflow: hidden; background-size: cover; background-position: center; transition: all 0.3s; border: 2px solid transparent; }
+        .profile-avatar-wrapper:hover .profile-large-avatar { filter: brightness(0.6); border-color: var(--accent-purple); box-shadow: 0 0 15px var(--accent-glow); }
+        
+        .avatar-upload-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .profile-avatar-wrapper:hover .avatar-upload-overlay { opacity: 1; }
+        .avatar-upload-overlay i { font-size: 1.5rem; }
+        .avatar-upload-overlay span { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-top: 0.2rem; }
+
+        .profile-info-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+        .info-field { background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); padding: 1.2rem; border-radius: 16px; }
+        .info-field label { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; display: block; margin-bottom: 0.3rem; }
+
+        .logout-btn { margin-top: 2rem; background: transparent; border: 1px solid rgba(239, 68, 68, 0.2); color: var(--danger); padding: 0.6rem; border-radius: 10px; cursor: pointer; font-weight: 500; width: 100%; transition: 0.2s; }
+        .logout-btn:hover { background: rgba(239, 68, 68, 0.08); }
+    </style>
+</head>
+<body>
+
+    <!-- ================= СТРАНИЦА ВХОДА И РЕГИСТРАЦИИ ================= -->
+    <div id="auth-screen">
+        <div class="auth-card">
+            <div class="logo" style="justify-content: center; margin-bottom: 1.5rem;">
+                <i class="ri-pulse-line"></i> MAXI<span>TET</span>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" id="tab-login-btn" onclick="toggleAuthMode('login')">Вход</button>
+                <button class="auth-tab-btn" id="tab-register-btn" onclick="toggleAuthMode('register')">Регистрация</button>
+            </div>
+
+            <!-- Форма авторизации -->
+            <div id="form-login" class="auth-form active">
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; text-align: left;">Войдите, используя свой логин (или логин "roman")</p>
+                <input type="text" id="username" class="auth-input" placeholder="Логин">
+                <input type="password" id="password" class="auth-input" placeholder="Пароль">
+                <p id="auth-error" class="msg-alert" style="color: var(--danger);">Неверный логин или пароль!</p>
+                <button class="auth-btn" onclick="handleLogin()">Войти в кабинет</button>
+            </div>
+
+            <!-- Форма регистрации -->
+            <div id="form-register" class="auth-form">
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; text-align: left;">Создайте новый аккаунт студента</p>
+                <input type="text" id="reg-name" class="auth-input" placeholder="Имя">
+                <input type="text" id="reg-surname" class="auth-input" placeholder="Фамилия">
+                <input type="text" id="reg-username" class="auth-input" placeholder="Придумайте логин">
+                <input type="password" id="reg-password" class="auth-input" placeholder="Придумайте пароль">
+                <p id="reg-error" class="msg-alert" style="color: var(--danger);"></p>
+                <p id="reg-success" class="msg-alert" style="color: var(--success);">Регистрация успешна! Теперь вы можете войти.</p>
+                <button class="auth-btn" onclick="handleRegister()">Зарегистрироваться</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= ОСНОВНОЙ ИНТЕРФЕЙС ПРИЛОЖЕНИЯ ================= -->
+    <div id="app-interface">
+        <aside>
+            <div>
+                <div class="logo"><i class="ri-pulse-line"></i> MAXI<span>TET</span></div>
+                <ul class="nav-links">
+                    <li class="nav-item active" id="menu-dash" onclick="switchTab('tab-dashboard', this)">
+                        <a href="javascript:void(0)"><i class="ri-grid-fill"></i> Главная</a>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('tab-profile', this)">
+                        <a href="javascript:void(0)"><i class="ri-user-3-line"></i> Личный кабинет</a>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('tab-grades', this)">
+                        <a href="javascript:void(0)"><i class="ri-todo-line"></i> Журнал по месяцам</a>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('tab-homework', this)">
+                        <a href="javascript:void(0)"><i class="ri-book-read-line"></i> Домашние задания</a>
+                    </li>
+                </ul>
+            </div>
+            <div style="display: flex; flex-direction: column; width: 100%;">
+                <div class="user-profile-shortcut">
+                    <div class="avatar" id="sidebar-avatar-view">Р</div>
+                    <div>
+                        <h4 id="sidebar-user-name" style="font-size: 0.95rem; font-weight: 600;">Роман М.</h4>
+                        <p style="color: var(--text-muted); font-size: 0.8rem;">Группа ИС-124</p>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()"><i class="ri-logout-box-r-line"></i> Выйти</button>
+            </div>
+        </aside>
+
+        <main>
+            <!-- 1. ВКЛАДКА: ГЛАВНАЯ -->
+            <div id="tab-dashboard" class="tab-content active-tab">
+                <header>
+                    <h1 id="welcome-title">С возвращением, Роман!</h1>
+                    <p>Твое актуальное расписание пар и статус обучения на сегодня.</p>
+                </header>
+
+                <div class="grid-layout">
+                    <div>
+                        <div class="custom-card live-banner">
+                            <div class="badge-live"><span></span>В ЭФИРЕ ПРЯМО СЕЙЧАС</div>
+                            <h2 style="font-size: 1.7rem; font-weight: 700; margin-bottom: 0.5rem;">Основы веб-разработки и UI/UX</h2>
+                            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Платформа интеграции трансляции: максимум</p>
+                            <a href="https://maximumtest.ru/" target="_blank" class="btn-action">Войти на пару <i class="ri-external-link-line"></i></a>
+                        </div>
+
+                        <div class="section-title"><i class="ri-time-line" style="color: var(--accent-purple);"></i> Расписание занятий</div>
+                        <div class="item-list">
+                            <div class="list-item">
+                                <div class="item-main"><h4>Архитектура программного обеспечения</h4><p>Лекция · Преподаватель: Котов Д.А.</p></div>
+                                <div class="badge-info">09:00 - 10:30</div>
+                            </div>
+                            <div class="list-item">
+                                <div class="item-main"><h4>Основы веб-разработки и UI/UX</h4><p>Онлайн-практика (Максимум)</p></div>
+                                <div class="badge-info">11:00 - 12:30</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ВИДЖЕТ СТАТИСТИКИ ГРУППЫ -->
+                    <div>
+                        <div class="section-title"><i class="ri-team-line" style="color: var(--accent-purple);"></i> Рейтинг группы ИС-124</div>
+                        <div class="custom-card" style="padding: 1.5rem;">
+                            <div class="group-ranking-list">
+                                <div class="ranking-item">
+                                    <div class="ranking-user"><span class="ranking-position">1</span><span>Алексей К.</span></div>
+                                    <span class="ranking-gpa" style="color: var(--success);">4.92</span>
+                                </div>
+                                <div class="ranking-item">
+                                    <div class="ranking-user"><span class="ranking-position">2</span><span>Мария Д.</span></div>
+                                    <span class="ranking-gpa" style="color: var(--success);">4.75</span>
+                                </div>
+                                <div class="ranking-item highlight">
+                                    <div class="ranking-user"><span class="ranking-position">3</span><strong id="rank-user-label">Роман М. (Вы)</strong></div>
+                                    <span class="ranking-gpa" style="color: #A78BFA; font-weight:700;">4.40</span>
+                                </div>
+                                <div class="ranking-item">
+                                    <div class="ranking-user"><span class="ranking-position">4</span><span>Иван П.</span></div>
+                                    <span class="ranking-gpa" style="color: var(--warning);">4.15</span>
+                                </div>
+                                <div class="ranking-item">
+                                    <div class="ranking-user"><span class="ranking-position">5</span><span>Елена С.</span></div>
+                                    <span class="ranking-gpa" style="color: var(--danger);">3.60</span>
+                                </div>
+                            </div>
+
+                            <div class="group-summary-stats">
+                                <div class="summary-stat-box">
+                                    <p style="color: var(--text-muted); font-size: 0.75rem;">Ср. балл группы</p>
+                                    <h4 style="font-size: 1.1rem; margin-top: 0.2rem; color: var(--cyan);">4.36</h4>
+                                </div>
+                                <div class="summary-stat-box">
+                                    <p style="color: var(--text-muted); font-size: 0.75rem;">Твоя позиция</p>
+                                    <h4 style="font-size: 1.1rem; margin-top: 0.2rem; color: var(--accent-purple);">3 из 24</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. ВКЛАДКА: ЛИЧНЫЙ КАБИНЕТ -->
+            <div id="tab-profile" class="tab-content">
+                <header><h1>Личный кабинет студента</h1><p>Персональные и академические сведения.</p></header>
+                <div class="custom-card profile-container">
+                    <div class="profile-card-sidebar">
+                        <div class="profile-avatar-wrapper" onclick="triggerAvatarUpload()">
+                            <div class="profile-large-avatar" id="profile-avatar-view">Р</div>
+                            <div class="avatar-upload-overlay">
+                                <i class="ri-camera-switch-line"></i>
+                                <span>Изменить</span>
+                            </div>
+                        </div>
+                        <input type="file" id="avatar-file-input" style="display: none;" accept="image/*" onchange="loadAvatar(event)">
+
+                        <div>
+                            <h2 id="profile-full-name" style="font-weight:700;">Морозов Роман</h2>
+                            <p style="color: var(--accent-purple); font-weight:500;">Студент 1 курса</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom:1.2rem; font-size:1.1rem;">Карточка студента</h3>
+                        <div class="profile-info-fields">
+                            <div class="info-field"><label>Специальность</label><p>Информационные системы и программирование</p></div>
+                            <div class="info-field"><label>Группа</label><p>ИС-124</p></div>
+                            <div class="info-field"><label>ID Студенческого</label><p>MT-2024-8902</p></div>
+                            <div class="info-field"><label>Почта / Логин</label><p id="profile-email-view">roman@maxitet.edu</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. ВКЛАДКА: ЖУРНАЛ ОЦЕНОК (ВСЕ 12 МЕСЯЦЕВ) -->
+            <div id="tab-grades" class="tab-content">
+                <header><h1>Архитектура Успеваемости</h1><p>Кликни по любому месяцу на интерактивном таймлайне для загрузки ведомости.</p></header>
+                
+                <!-- Прокручиваемый таймлайн на 12 месяцев -->
+                <div class="timeline-scroll-container" id="timeline-container"></div>
+                
+                <div class="month-stats-grid">
+                    <div class="mini-stat-card">
+                        <div class="mini-stat-icon" style="color: var(--accent-purple);"><i class="ri-bookmark-3-line"></i></div>
+                        <div><p style="color: var(--text-muted); font-size: 0.75rem;">Статус периода</p><h4 id="stat-phase">—</h4></div>
+                    </div>
+                    <div class="mini-stat-card">
+                        <div class="mini-stat-icon" style="color: var(--success);"><i class="ri-star-line"></i></div>
+                        <div><p style="color: var(--text-muted); font-size: 0.75rem;">Средний балл</p><h4 id="stat-gpa">—</h4></div>
+                    </div>
+                    <div class="mini-stat-card">
+                        <div class="mini-stat-icon" style="color: var(--cyan);"><i class="ri-checkbox-circle-line"></i></div>
+                        <div><p style="color: var(--text-muted); font-size: 0.75rem;">Сдано предметов</p><h4 id="stat-passed">—</h4></div>
+                    </div>
+                    <div class="mini-stat-card">
+                        <div class="mini-stat-icon" style="color: var(--warning);"><i class="ri-user-voice-line"></i></div>
+                        <div><p style="color: var(--text-muted); font-size: 0.75rem;">Посещаемость</p><h4 id="stat-attendance">—</h4></div>
+                    </div>
+                </div>
+                <div class="custom-card" id="grades-board-wrapper"></div>
+            </div>
+
+            <!-- 4. ВКЛАДКА: ДОМАШНИЕ ЗАДАНИЯ -->
+            <div id="tab-homework" class="tab-content">
+                <header><h1>Домашние задания и проекты</h1><p>Следи за дедлайнами и управляй отправкой решений.</p></header>
+                <div class="item-list" id="homework-list-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= СКРИПТ УПРАВЛЕНИЯ И ДАННЫЕ ================= -->
+    <script>
+        // Инициализация базы пользователей
+        if (!localStorage.getItem('users')) {
+            const defaultUsers = {
+                'roman': { password: '123', name: 'Роман', surname: 'Морозов' }
+            };
+            localStorage.setItem('users', JSON.stringify(defaultUsers));
+        }
+
+        let currentUser = null;
+
+        // Полная база на все 12 месяцев года
+        const academicYearData = {
+            september: { name: "Сентябрь", phase: "1 Семестр", type: "table", gpa: "4.8", passed: "3 / 3", att: "98%", data: [
+                { title: "Информатика", total: "5", hw: "5", pos: "5" },
+                { title: "Математика", total: "4", hw: "4", pos: "5" },
+                { title: "Основы алгоритмизации", total: "5", hw: "5", pos: "4" }
+            ]},
+            october: { name: "Октябрь", phase: "1 Семестр", type: "table", gpa: "4.5", passed: "3 / 3", att: "96%", data: [
+                { title: "Информатика", total: "5", hw: "4", pos: "5" },
+                { title: "Математика", total: "4", hw: "4", pos: "4" },
+                { title: "Основы алгоритмизации", total: "4", hw: "5", pos: "5" }
+            ]},
+            november: { name: "Ноябрь", phase: "1 Семестр", type: "table", gpa: "4.6", passed: "3 / 3", att: "92%", data: [
+                { title: "Информатика", total: "5", hw: "5", pos: "4" },
+                { title: "Математика", total: "4", hw: "5", pos: "5" },
+                { title: "Основы алгоритмизации", total: "5", hw: "4", pos: "4" }
+            ]},
+            december: { name: "Декабрь", phase: "Зимняя Сессия", type: "table", gpa: "4.7", passed: "3 / 3", att: "95%", data: [
+                { title: "Экзамен: Информатика", total: "5", hw: "5", pos: "5" },
+                { title: "Экзамен: Математика", total: "4", hw: "4", pos: "5" },
+                { title: "Диф.зачет: Алгоритмы", total: "5", hw: "5", pos: "5" }
+            ]},
+            january: { name: "Январь", phase: "Каникулы", type: "empty", gpa: "—", passed: "—", att: "—", icon: "ri-snowflake-line", title: "Зимние каникулы", desc: "Учебный семестр завершен. Отдыхайте и набирайтесь сил перед новыми проектами!" },
+            february: { name: "Февраль", phase: "2 Семестр", type: "table", gpa: "4.3", passed: "3 / 3", att: "94%", data: [
+                { title: "Архитектура ПО", total: "4", hw: "4", pos: "5" },
+                { title: "Основы веб-разработки", total: "5", hw: "5", pos: "4" },
+                { title: "Разработка баз данных", total: "4", hw: "4", pos: "5" }
+            ]},
+            march: { name: "Март", phase: "2 Семестр", type: "table", gpa: "4.5", passed: "3 / 3", att: "91%", data: [
+                { title: "Архитектура ПО", total: "4", hw: "5", pos: "4" },
+                { title: "Основы веб-разработки", total: "5", hw: "5", pos: "5" },
+                { title: "Разработка баз данных", total: "4", hw: "5", pos: "4" }
+            ]},
+            april: { name: "Апрель", phase: "2 Семестр", type: "table", gpa: "4.4", passed: "3 / 3", att: "95%", data: [
+                { title: "Архитектура ПО", total: "5", hw: "4", pos: "5" },
+                { title: "Основы веб-разработки", total: "4", hw: "5", pos: "4" },
+                { title: "Разработка баз данных", total: "4", hw: "4", pos: "5" }
+            ]},
+            may: { name: "Май", phase: "2 Семестр", type: "table", gpa: "4.4", passed: "3 / 3", att: "92%", data: [
+                { title: "Архитектура ПО", total: "4", hw: "4", pos: "4" },
+                { title: "Основы веб-разработки", total: "5", hw: "5", pos: "5" },
+                { title: "Разработка баз данных", total: "4", hw: "4", pos: "4" }
+            ]},
+            june: { name: "Июнь", phase: "Летняя Сессия", type: "empty", gpa: "—", passed: "0 / 3", att: "—", icon: "ri-book-open-line", title: "Оценки скоро появятся!", desc: "Экзаменационная сессия начнется в середине месяца." },
+            july: { name: "Июль", phase: "Практика", type: "empty", gpa: "—", passed: "—", att: "—", icon: "ri-terminal-box-line", title: "Производственная практика", desc: "Период стажировок, написания отчетов и работы над реальными кейсами компаний." },
+            august: { name: "Август", phase: "Каникулы", type: "empty", gpa: "—", passed: "—", att: "—", icon: "ri-sun-line", title: "Летние каникулы", desc: "Увидимся в следующем учебном году! Хорошего отдыха." }
+        };
+
+        const homeworksData = [
+            { title: "Интеграция API в веб-проект", subject: "Основы веб-разработки", date: "До 15 июня", status: "warning", statusText: "Ждет решения" },
+            { title: "Проектирование схемы БД 'Библиотека'", subject: "Разработка баз данных", date: "Проверено", status: "success", statusText: "Оценка: 5" }
+        ];
+
+        function toggleAuthMode(mode) {
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.msg-alert').forEach(m => m.style.display = 'none');
+
+            if (mode === 'login') {
+                document.getElementById('form-login').classList.add('active');
+                document.getElementById('tab-login-btn').classList.add('active');
+            } else {
+                document.getElementById('form-register').classList.add('active');
+                document.getElementById('tab-register-btn').classList.add('active');
+            }
+        }
+
+        function handleRegister() {
+            const name = document.getElementById('reg-name').value.trim();
+            const surname = document.getElementById('reg-surname').value.trim();
+            const user = document.getElementById('reg-username').value.trim().toLowerCase();
+            const pass = document.getElementById('reg-password').value.trim();
+            const errBox = document.getElementById('reg-error');
+            const successBox = document.getElementById('reg-success');
+
+            errBox.style.display = 'none';
+            successBox.style.display = 'none';
+
+            if (!name || !surname || !user || !pass) {
+                errBox.innerText = 'Заполните все поля!';
+                errBox.style.display = 'block';
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('users'));
+            if (users[user]) {
+                errBox.innerText = 'Логин занят!';
+                errBox.style.display = 'block';
+                return;
+            }
+
+            users[user] = { password: pass, name: name, surname: surname };
+            localStorage.setItem('users', JSON.stringify(users));
+
+            successBox.style.display = 'block';
+            setTimeout(() => toggleAuthMode('login'), 1500);
+        }
+
+        function handleLogin() {
+            const user = document.getElementById('username').value.trim().toLowerCase();
+            const pass = document.getElementById('password').value.trim();
+            const errBox = document.getElementById('auth-error');
+
+            let users = JSON.parse(localStorage.getItem('users'));
+
+            if (users[user] && users[user].password === pass) {
+                currentUser = users[user];
+                currentUser.login = user;
+                
+                setupUserInterface();
+
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('app-interface').style.display = 'block';
+                
+                initTimeline();
+                initHomeworks();
+            } else {
+                errBox.style.display = 'block';
+            }
+        }
+
+        function setupUserInterface() {
+            const firstLetter = currentUser.name.charAt(0).toUpperCase();
+            const secondLetter = currentUser.surname.charAt(0).toUpperCase();
+            const initials = firstLetter + (secondLetter || '');
+
+            document.getElementById('welcome-title').innerText = `С возвращением, ${currentUser.name}!`;
+            document.getElementById('sidebar-user-name').innerText = `${currentUser.name} ${firstLetter}.`;
+            document.getElementById('rank-user-label').innerText = `${currentUser.name} ${firstLetter}. (Вы)`;
+            document.getElementById('profile-full-name').innerText = `${currentUser.surname} ${currentUser.name}`;
+            document.getElementById('profile-email-view').innerText = `${currentUser.login}@maxitet.edu`;
+
+            const profAv = document.getElementById('profile-avatar-view');
+            const sideAv = document.getElementById('sidebar-avatar-view');
+            
+            profAv.style.backgroundImage = 'none'; profAv.innerText = initials;
+            sideAv.style.backgroundImage = 'none'; sideAv.innerText = initials;
+        }
+
+        function handleLogout() {
+            document.getElementById('app-interface').style.display = 'none';
+            document.getElementById('auth-screen').style.display = 'flex';
+            switchTab('tab-dashboard', document.getElementById('menu-dash'));
+        }
+
+        function triggerAvatarUpload() { document.getElementById('avatar-file-input').click(); }
+
+        function loadAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageUrl = e.target.result;
+                    document.getElementById('profile-avatar-view').style.backgroundImage = `url('${imageUrl}')`;
+                    document.getElementById('profile-avatar-view').innerText = ''; 
+                    document.getElementById('sidebar-avatar-view').style.backgroundImage = `url('${imageUrl}')`;
+                    document.getElementById('sidebar-avatar-view').innerText = '';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function initTimeline() {
+            const container = document.getElementById('timeline-container');
+            container.innerHTML = '';
+            Object.keys(academicYearData).forEach((key) => {
+                const month = academicYearData[key];
+                const btn = document.createElement('button');
+                btn.className = `timeline-month-btn ${key === 'may' ? 'active-month' : ''}`;
+                btn.id = `btn-${key}`;
+                btn.onclick = () => selectMonth(key);
+                btn.innerHTML = `${month.name} <span class="phase-tag">${month.phase}</span>`;
+                container.appendChild(btn);
+            });
+            selectMonth('may');
+        }
+
+        function selectMonth(monthKey) {
+            document.querySelectorAll('.timeline-month-btn').forEach(btn => btn.classList.remove('active-month'));
+            if(document.getElementById(`btn-${monthKey}`)) document.getElementById(`btn-${monthKey}`).classList.add('active-month');
+
+            const mData = academicYearData[monthKey];
+            document.getElementById('stat-phase').innerText = mData.phase;
+            document.getElementById('stat-gpa').innerText = mData.gpa;
+            document.getElementById('stat-passed').innerText = mData.passed;
+            document.getElementById('stat-attendance').innerText = mData.att;
+
+            const wrapper = document.getElementById('grades-board-wrapper');
+            if (mData.type === 'table') {
+                let tableHTML = `<div class="grades-table-container"><table class="grades-table"><thead><tr><th>Предмет</th><th>Итог</th><th>ДЗ</th><th>Посещаемость</th></tr></thead><tbody>`;
+                mData.data.forEach(row => {
+                    tableHTML += `<tr><td>${row.title}</td><td><span class="final-badge-col green">${row.total}</span></td><td>${row.hw}</td><td>${row.pos}</td></tr>`;
+                });
+                tableHTML += `</tbody></table></div>`;
+                wrapper.innerHTML = tableHTML;
+            } else {
+                wrapper.innerHTML = `<div class="special-state-container"><div class="special-state-icon"><i class="${mData.icon}"></i></div><h2>${mData.title}</h2><p>${mData.desc}</p></div>`;
+            }
+        }
+
+        function initHomeworks() {
+            const hwContainer = document.getElementById('homework-list-container');
+            hwContainer.innerHTML = '';
+            homeworksData.forEach(task => {
+                hwContainer.innerHTML += `
+                    <div class="custom-card list-item">
+                        <div>
+                            <span class="status-badge ${task.status}">${task.statusText}</span>
+                            <h3 style="font-weight:700; font-size:1.15rem; margin-top:0.4rem;">${task.title}</h3>
+                            <p style="color:var(--text-muted); font-size:0.85rem;">Дисциплина: ${task.subject} · ${task.date}</p>
+                        </div>
+                        ${task.status === 'warning' ? '<button class="btn-submit-task">Сдать работу</button>' : '<span style="color:var(--success); font-weight:600;">✔️ Выполнено</span>'}
+                    </div>`;
+            });
+        }
+
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active-tab'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active-tab');
+            element.classList.add('active');
+        }
+    </script>
+</body>
+</html>
